@@ -1,0 +1,11 @@
+{
+    "require": {
+        "maknz/slack": "^1.7",
+        "nesbot/carbon": "^1.22"
+    },
+    "autoload": {
+        "files": [
+            "src/functions.php"
+        ]
+    }
+}

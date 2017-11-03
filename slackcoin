@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+declare -a required_variables=("SLACK_WEBHOOK_URL")
+
+for i in "${required_variables[@]}"
+do
+   if [ -z "${!i}" ]; then
+       echo "$i environment variable is not set"
+       exit 1
+   fi
+done
+
+if [ ! -d vendor ]; then
+    ./docker/composer install
+fi
+
+if [ -z $CURRENCY ]; then
+    export CURRENCY=USD
+fi
+
+docker run --rm -it \
+           -e "SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL" \
+           -e "CURRENCY=$CURRENCY" \
+           -e "TIMESTAMPS=$TIMESTAMPS" \
+           -e "INLINE=$INLINE" \
+           -v $(pwd):/app \
+           php:7.1 \
+           php /app/slackcoin.php
