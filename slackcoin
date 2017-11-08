@@ -18,7 +18,7 @@ if [ -z $CURRENCY ]; then
     export CURRENCY=USD
 fi
 
-docker run --rm -it \
+docker run --rm \
            -e "SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL" \
            -e "CURRENCY=$CURRENCY" \
            -e "TIMESTAMPS=$TIMESTAMPS" \
