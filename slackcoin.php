@@ -44,11 +44,24 @@ foreach ($values as $key => $value) {
     if ($key == 'now') {
         $value = sprintf('%s %s', $value, $currency);
     } else {
+
+        if (filter_var(getenv('PRICE_CHANGE_DIFF'), FILTER_VALIDATE_BOOLEAN)) {
+            $priceChange = sprintf(
+                '%+.2f%%',
+                ($values['now'] - $value) / $value * 100
+            );
+        } else {
+            $priceChange = sprintf(
+                '%.2f%%',
+                $value / $values['now'] * 100
+            );
+        }
+
         $value = sprintf(
-            '%s %s (%s%%)',
+            '%s %s (%s)',
             $value,
             $currency,
-            number_format((float) $value / (float) $values['now'] * 100, 2)
+            $priceChange
         );
     }
 

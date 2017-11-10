@@ -16,7 +16,7 @@ Here are two fairly easy ways to get going:
 
 Voila!  
 You should see current Bitcoin value sent to your Slack team.
-  
+
 If you want more customization and more data, please see **Advanced usage** chapter.
 
 ## Advanced usage
@@ -46,6 +46,13 @@ If you want them to be displayed side-by-side, set `INLINE` to `true` (or anythi
 
 **Example usage**
 `INLINE=true ./slackcoin`
+
+### Price change display
+By default, Slackcoin will calculate a relative price percentage for all the past timestamps in relation to the current price.
+To see to what degree the current price has increased or decreased, set the `PRICE_CHANGE_DIFF` variable to `true`.
+
+**Example usage**
+`PRICE_CHANGE_DIFF=true ./slackcoin`
 
 ### Combine
 Of course you can combine these as you like. One example I personally use is:  
