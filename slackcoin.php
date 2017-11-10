@@ -60,7 +60,7 @@ foreach ($values as $key => $value) {
 }
 
 $attachment = new \Maknz\Slack\Attachment([
-    'text' => 'Bitcoin Value',
+    'text' => 'Bitcoin Value - <https://www.coinbase.com/charts|View Chart>',
     'color' => $color,
     'fields' => $fields,
 ]);
