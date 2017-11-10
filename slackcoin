@@ -23,6 +23,7 @@ docker run --rm \
            -e "CURRENCY=$CURRENCY" \
            -e "TIMESTAMPS=$TIMESTAMPS" \
            -e "INLINE=$INLINE" \
+           -e "PRICE_CHANGE_DIFF=$PRICE_CHANGE_DIFF" \
            -v $(pwd):/app \
            php:7.1 \
            php /app/slackcoin.php
