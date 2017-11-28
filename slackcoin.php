@@ -7,9 +7,14 @@ require 'vendor/autoload.php';
 // Set up
 $slack = new Maknz\Slack\Client(getenv('SLACK_WEBHOOK_URL'));
 $currency = getenv('CURRENCY');
-$timestamps = array_filter(array_map(function ($item) {
-    return trim($item);
-}, explode(',', getenv('TIMESTAMPS'))));
+$locale = getenv('LOCALE');
+
+$timestamps = getenv('TIMESTAMPS') ? getenv('TIMESTAMPS') : [];
+if ($timestamps) {
+    $timestamps = array_filter(array_map(function ($item) {
+        return trim($item);
+    }, explode(',', $timestamps)));
+}
 
 // fetch current price + whatever specified through TIMESTAMPS env variable
 $values = [
@@ -40,34 +45,24 @@ if (count($values) > 1) {
 
 // resolve fields to be added as the Slack attachment
 $fields = [];
+$currencyFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+$percentFormatter = new NumberFormatter($locale, NumberFormatter::PERCENT);
+$percentFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 2);
 foreach ($values as $key => $value) {
     if ($key == 'now') {
-        $value = sprintf('%s %s', $value, $currency);
+        $fieldValue = $currencyFormatter->formatCurrency($value, $currency);
     } else {
+        $fieldValue = $currencyFormatter->formatCurrency($value, $currency);
 
         if (filter_var(getenv('PRICE_CHANGE_DIFF'), FILTER_VALIDATE_BOOLEAN)) {
-            $priceChange = sprintf(
-                '%+.2f%%',
-                ($values['now'] - $value) / $value * 100
-            );
-        } else {
-            $priceChange = sprintf(
-                '%.2f%%',
-                $value / $values['now'] * 100
-            );
+            $priceChange = ($values['now'] - $value) / $value;
+            $fieldValue = sprintf('%s (%s)', $fieldValue, $percentFormatter->format($priceChange));
         }
-
-        $value = sprintf(
-            '%s %s (%s)',
-            $value,
-            $currency,
-            $priceChange
-        );
     }
 
     $fields[] = [
         'title' => ucfirst($key),
-        'value' => $value,
+        'value' => $fieldValue,
         'short' => getenv('INLINE'),
     ];
 }

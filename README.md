@@ -54,9 +54,14 @@ To see to what degree the current price has increased or decreased, set the `PRI
 **Example usage**
 `PRICE_CHANGE_DIFF=true ./slackcoin`
 
+### Locale-aware formatting
+Specify `LOCALE` env variable to have price and numbers formatted in desired locale.
+
+**Example usage** `LOCALE=en_US` or `LOCALE=hr_HR`
+
 ### Combine
 Of course you can combine these as you like. One example I personally use is:  
-`CURRENCY=EUR INLINE=true TIMESTAMPS="yesterday, 7 days ago, 30 days ago" ./slackcoin`
+`CURRENCY=EUR INLINE=true LOCALE=hr_HR TIMESTAMPS="yesterday, 7 days ago, 30 days ago" ./slackcoin`
 
 And here's how it looks  
 ![Example](https://i.imgur.com/8ELlnoF.png)
