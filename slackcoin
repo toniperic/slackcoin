@@ -18,12 +18,12 @@ if [ -z $CURRENCY ]; then
     export CURRENCY=USD
 fi
 
-docker run --rm \
-           -e "SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL" \
-           -e "CURRENCY=$CURRENCY" \
-           -e "TIMESTAMPS=$TIMESTAMPS" \
-           -e "INLINE=$INLINE" \
-           -e "PRICE_CHANGE_DIFF=$PRICE_CHANGE_DIFF" \
-           -v $(pwd):/app \
-           php:7.1 \
-           php /app/slackcoin.php
+if [ -z $LOCALE ]; then
+    export LOCALE=en_US
+fi
+
+if [ -z $PRICE_CHANGE_DIFF ]; then
+    export PRICE_CHANGE_DIFF=true
+fi
+
+docker-compose run app php /code/slackcoin.php
